@@ -56,6 +56,7 @@ export function createScene(container: HTMLElement): Scene {
 
   // Set initial resolution for line materials
   mountains.onResize(width, height)
+  y.onResize(width, height)
 
   // Resize handler
   const handleResize = () => {
@@ -65,6 +66,7 @@ export function createScene(container: HTMLElement): Scene {
     camera.updateProjectionMatrix()
     renderer.setSize(w, h)
     mountains.onResize(w, h)
+    y.onResize(w, h)
   }
   window.addEventListener("resize", handleResize)
 

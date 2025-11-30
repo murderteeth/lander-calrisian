@@ -21,7 +21,7 @@ export const GRID_SCROLL_SPEED = .4 // World units per second
 // Mountains - shared settings
 export const MOUNTAINS_COLOR = 0x273e81
 export const MOUNTAINS_DISTANCE = 80 // Base distance from camera
-export const MOUNTAINS_LINE_WIDTH = 2 // Wireframe line width (pixels)
+export const MOUNTAINS_LINE_WIDTH = 1 // Wireframe line width (pixels)
 export const MOUNTAINS_ROTATION = { x: -15, y: 5, z: 0 } // Degrees
 
 // Individual mountain definitions: left to right
@@ -38,4 +38,9 @@ export const MOUNTAINS = [
 ]
 
 // Y Character
-export const Y_COLOR = 0x0657f9
+export const Y_COLOR = 0x273e81
+export const Y_POSITION = { x: 0, y: 20, z: -100 } // World position
+export const Y_SCALE = 0.14 // Scale factor
+export const Y_ROTATION = { x: 0, y: 0, z: 0 } // Degrees
+export const Y_LINE_WIDTH = 1 // Wireframe line width (pixels)
+export const Y_DEPTH = 32 // Extrusion depth

@@ -7,7 +7,10 @@ import {
   BG_COLOR,
   CAMERA_FOV,
   CAMERA_HEIGHT,
-  HORIZON_POSITION,
+  CAMERA_ORBIT_ANGLE,
+  CAMERA_DISTANCE,
+  CAMERA_ROLL,
+  Y_POSITION,
 } from "./config"
 
 export interface Scene {
@@ -24,20 +27,25 @@ export function createScene(container: HTMLElement): Scene {
   const scene = new THREE.Scene()
   scene.background = new THREE.Color(BG_COLOR)
 
-  // Perspective camera
+  // Perspective camera with orbital positioning around Y
   const camera = new THREE.PerspectiveCamera(
     CAMERA_FOV,
     width / height,
     0.1,
     1000
   )
-  camera.position.set(0, CAMERA_HEIGHT, 0)
 
-  // Calculate tilt to place horizon at desired screen position
-  // HORIZON_POSITION: 0 = bottom, 0.5 = center, 1 = top
-  const fovRad = THREE.MathUtils.degToRad(CAMERA_FOV)
-  const tilt = (HORIZON_POSITION - 0.5) * fovRad
-  camera.rotation.x = tilt
+  // Calculate camera position on orbit circle around Y_POSITION
+  const orbitAngleRad = THREE.MathUtils.degToRad(CAMERA_ORBIT_ANGLE)
+  const cameraX = Y_POSITION.x + Math.sin(orbitAngleRad) * CAMERA_DISTANCE
+  const cameraZ = Y_POSITION.z + Math.cos(orbitAngleRad) * CAMERA_DISTANCE
+  camera.position.set(cameraX, CAMERA_HEIGHT, cameraZ)
+
+  // Look at the Y position
+  camera.lookAt(Y_POSITION.x, Y_POSITION.y, Y_POSITION.z)
+
+  // Apply roll (tilt on view axis) after lookAt
+  camera.rotateZ(THREE.MathUtils.degToRad(-CAMERA_ROLL))
 
   // Renderer
   const renderer = new THREE.WebGLRenderer({ antialias: true })

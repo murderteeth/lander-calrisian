@@ -8,14 +8,16 @@ export const BG_COLOR = 0x020618
 // Camera
 export const CAMERA_FOV = 75
 export const CAMERA_HEIGHT = 5
-export const HORIZON_POSITION = 0.68 // 0 = bottom, 1 = top
+export const CAMERA_ORBIT_ANGLE = 25 // Degrees, horizontal orbit around target (+ = right)
+export const CAMERA_DISTANCE = 100 // Distance from target
+export const CAMERA_ROLL = 2 // Degrees, tilt on view axis (+ = clockwise)
 
 // Grid
-export const GRID_LINE_COLOR = 0xb2edff
+export const GRID_LINE_COLOR = 0x314158
 export const GRID_CELL_SIZE = 2 // World units per cell
 export const GRID_LINE_WIDTH = 0.005 // World units
-export const GRID_DEPTH = 60 // How far the grid extends
-export const GRID_WIDTH = 200 // How wide the grid extends
+export const GRID_DEPTH = 100 // How far the grid extends
+export const GRID_WIDTH = 300 // How wide the grid extends
 export const GRID_SCROLL_SPEED = .4 // World units per second
 
 // Mountains - shared settings

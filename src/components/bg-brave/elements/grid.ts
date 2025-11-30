@@ -1,5 +1,6 @@
 import * as THREE from "three"
 import {
+  BG_COLOR,
   GRID_LINE_COLOR,
   GRID_CELL_SIZE,
   GRID_LINE_WIDTH,
@@ -21,6 +22,7 @@ const vertexShader = `
 const fragmentShader = `
   uniform float uTime;
   uniform vec3 uLineColor;
+  uniform vec3 uBgColor;
   uniform float uCellSize;
   uniform float uLineWidth;
   uniform float uScrollSpeed;
@@ -52,9 +54,9 @@ const fragmentShader = `
     float fade = 1.0 - smoothstep(50.0, 150.0, dist);
     line *= fade;
 
-    if (line < 0.01) discard;
-
-    gl_FragColor = vec4(uLineColor, line);
+    // Mix background and line colors (solid fill, no transparency)
+    vec3 color = mix(uBgColor, uLineColor, line);
+    gl_FragColor = vec4(color, 1.0);
   }
 `
 
@@ -72,11 +74,11 @@ export function createGrid(): GridElement {
     uniforms: {
       uTime: { value: 0 },
       uLineColor: { value: new THREE.Color(GRID_LINE_COLOR) },
+      uBgColor: { value: new THREE.Color(BG_COLOR) },
       uCellSize: { value: GRID_CELL_SIZE },
       uLineWidth: { value: GRID_LINE_WIDTH },
       uScrollSpeed: { value: GRID_SCROLL_SPEED },
     },
-    transparent: true,
     side: THREE.DoubleSide,
   })
 

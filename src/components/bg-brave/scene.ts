@@ -2,6 +2,12 @@ import * as THREE from "three"
 import { createGrid, type GridElement } from "./elements/grid"
 import { createMountains, type MountainsElement } from "./elements/mountains"
 import { createY, type YElement } from "./elements/y"
+import {
+  BG_COLOR,
+  CAMERA_FOV,
+  CAMERA_HEIGHT,
+  HORIZON_POSITION,
+} from "./config"
 
 export interface Scene {
   start: () => void
@@ -15,10 +21,22 @@ export function createScene(container: HTMLElement): Scene {
 
   // Scene
   const scene = new THREE.Scene()
+  scene.background = new THREE.Color(BG_COLOR)
 
-  // Orthographic camera for full-screen plane
-  const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10)
-  camera.position.z = 1
+  // Perspective camera
+  const camera = new THREE.PerspectiveCamera(
+    CAMERA_FOV,
+    width / height,
+    0.1,
+    1000
+  )
+  camera.position.set(0, CAMERA_HEIGHT, 0)
+
+  // Calculate tilt to place horizon at desired screen position
+  // HORIZON_POSITION: 0 = bottom, 0.5 = center, 1 = top
+  const fovRad = THREE.MathUtils.degToRad(CAMERA_FOV)
+  const tilt = (HORIZON_POSITION - 0.5) * fovRad
+  camera.rotation.x = tilt
 
   // Renderer
   const renderer = new THREE.WebGLRenderer({ antialias: true })
@@ -27,7 +45,7 @@ export function createScene(container: HTMLElement): Scene {
   container.appendChild(renderer.domElement)
 
   // Elements
-  const grid: GridElement = createGrid(width, height)
+  const grid: GridElement = createGrid()
   const mountains: MountainsElement = createMountains()
   const y: YElement = createY()
 
@@ -39,8 +57,9 @@ export function createScene(container: HTMLElement): Scene {
   const handleResize = () => {
     const w = container.clientWidth
     const h = container.clientHeight
+    camera.aspect = w / h
+    camera.updateProjectionMatrix()
     renderer.setSize(w, h)
-    grid.onResize(w, h)
   }
   window.addEventListener("resize", handleResize)
 

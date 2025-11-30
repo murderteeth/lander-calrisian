@@ -28,7 +28,7 @@ function App() {
             Automated yield that never sleeps
           </div>
 
-          <div className="mt-32 flex items-center gap-6">
+          <div className="mt-32 flex items-center gap-8">
             <Button variant="primary">Learn more</Button>
             <Button>Explore vaults</Button>
           </div>

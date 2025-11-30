@@ -18,13 +18,24 @@ export const GRID_DEPTH = 60 // How far the grid extends
 export const GRID_WIDTH = 200 // How wide the grid extends
 export const GRID_SCROLL_SPEED = .4 // World units per second
 
-// Mountains
-export const MOUNTAINS_COLOR = 0xb2edff
-export const MOUNTAINS_DISTANCE = 80 // Distance from camera
-export const MOUNTAINS_RADIUS = 15 // Size of each mountain
-export const MOUNTAINS_LINE_WIDTH = 1 // Wireframe line width (pixels)
+// Mountains - shared settings
+export const MOUNTAINS_COLOR = 0x273e81
+export const MOUNTAINS_DISTANCE = 80 // Base distance from camera
+export const MOUNTAINS_LINE_WIDTH = 2 // Wireframe line width (pixels)
 export const MOUNTAINS_ROTATION = { x: -15, y: 5, z: 0 } // Degrees
-export const MOUNTAINS_STRETCH_Y = 1.88 // Vertical scale (1 = normal, 2 = twice as tall)
+
+// Individual mountain definitions: left to right
+// Pattern: small, large, small, [gap], small, large, small
+export const MOUNTAINS = [
+  // Left group
+  { x: -50, z: 0, radius: 8, stretchY: 1.5 },
+  { x: -30, z: 0, radius: 15, stretchY: 1.88 },
+  { x: -12, z: 0, radius: 10, stretchY: 1.6 },
+  // Right group
+  { x: 12, z: 0, radius: 10, stretchY: 1.6 },
+  { x: 30, z: 0, radius: 15, stretchY: 1.88 },
+  { x: 50, z: 0, radius: 8, stretchY: 1.5 },
+]
 
 // Y Character
 export const Y_COLOR = 0x0657f9

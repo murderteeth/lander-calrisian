@@ -1,4 +1,5 @@
 import * as THREE from "three"
+THREE.ColorManagement.enabled = false
 import { createGrid, type GridElement } from "./elements/grid"
 import { createMountains, type MountainsElement } from "./elements/mountains"
 import { createY, type YElement } from "./elements/y"

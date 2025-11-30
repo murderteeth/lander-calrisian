@@ -6,10 +6,9 @@ import {
   BG_COLOR,
   MOUNTAINS_COLOR,
   MOUNTAINS_DISTANCE,
-  MOUNTAINS_RADIUS,
   MOUNTAINS_LINE_WIDTH,
   MOUNTAINS_ROTATION,
-  MOUNTAINS_STRETCH_Y,
+  MOUNTAINS,
 } from "../config"
 
 export interface MountainsElement {
@@ -46,7 +45,7 @@ function createOctahedronLines(radius: number): number[] {
     [...left, ...front],
   ]
 
-  // Flatten for LineGeometry (needs continuous points per segment)
+  // Flatten for LineGeometry
   const positions: number[] = []
   for (const edge of edges) {
     positions.push(...edge)
@@ -54,26 +53,32 @@ function createOctahedronLines(radius: number): number[] {
   return positions
 }
 
-export function createMountains(): MountainsElement {
-  const group = new THREE.Group()
+// Simple shader that outputs exact color with no processing
+const fillVertexShader = `
+  void main() {
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  }
+`
+const fillFragmentShader = `
+  uniform vec3 uColor;
+  void main() {
+    gl_FragColor = vec4(uColor, 1.0);
+  }
+`
 
-  // Solid fill
-  const geometry = new THREE.OctahedronGeometry(MOUNTAINS_RADIUS, 0)
-  const fillMaterial = new THREE.MeshBasicMaterial({
-    color: BG_COLOR,
-    side: THREE.DoubleSide,
-  })
+function createMountain(
+  config: { x: number; z: number; radius: number; stretchY: number },
+  lineMaterial: LineMaterial,
+  fillMaterial: THREE.ShaderMaterial
+): THREE.Group {
+  const { x, z, radius, stretchY } = config
+
+  // Solid fill with raw shader
+  const geometry = new THREE.OctahedronGeometry(radius, 0)
   const fill = new THREE.Mesh(geometry, fillMaterial)
 
-  // Fat wireframe lines using Line2
-  const lineMaterial = new LineMaterial({
-    color: MOUNTAINS_COLOR,
-    linewidth: MOUNTAINS_LINE_WIDTH,
-    worldUnits: false, // Screen-space pixels
-  })
-
-  // Create separate Line2 for each edge (Line2 draws continuous lines)
-  const positions = createOctahedronLines(MOUNTAINS_RADIUS)
+  // Wireframe edges
+  const positions = createOctahedronLines(radius)
   const linesGroup = new THREE.Group()
 
   for (let i = 0; i < positions.length; i += 6) {
@@ -92,21 +97,45 @@ export function createMountains(): MountainsElement {
   mountain.add(fill)
   mountain.add(linesGroup)
 
-  // Position at horizon
-  mountain.position.set(0, 0, -MOUNTAINS_DISTANCE)
+  // Position
+  mountain.position.set(x, 0, -(MOUNTAINS_DISTANCE + z))
 
-  // Apply rotation (convert degrees to radians)
+  // Apply shared rotation
   mountain.rotation.x = THREE.MathUtils.degToRad(MOUNTAINS_ROTATION.x)
   mountain.rotation.y = THREE.MathUtils.degToRad(MOUNTAINS_ROTATION.y)
   mountain.rotation.z = THREE.MathUtils.degToRad(MOUNTAINS_ROTATION.z)
 
   // Apply vertical stretch
-  mountain.scale.y = MOUNTAINS_STRETCH_Y
+  mountain.scale.y = stretchY
 
-  group.add(mountain)
+  return mountain
+}
 
-  // Clean up source geometry
-  geometry.dispose()
+export function createMountains(): MountainsElement {
+  const group = new THREE.Group()
+
+  // Shared line material for all mountains
+  const lineMaterial = new LineMaterial({
+    color: MOUNTAINS_COLOR,
+    linewidth: MOUNTAINS_LINE_WIDTH,
+    worldUnits: false,
+  })
+
+  // Shared fill material - raw shader for exact color match
+  const fillMaterial = new THREE.ShaderMaterial({
+    vertexShader: fillVertexShader,
+    fragmentShader: fillFragmentShader,
+    uniforms: {
+      uColor: { value: new THREE.Color(BG_COLOR) },
+    },
+    side: THREE.DoubleSide,
+  })
+
+  // Create each mountain from config
+  for (const config of MOUNTAINS) {
+    const mountain = createMountain(config, lineMaterial, fillMaterial)
+    group.add(mountain)
+  }
 
   return {
     object: group,
@@ -114,12 +143,11 @@ export function createMountains(): MountainsElement {
       lineMaterial.resolution.set(width, height)
     },
     dispose: () => {
+      lineMaterial.dispose()
+      fillMaterial.dispose()
       group.traverse((child) => {
         if (child instanceof THREE.Mesh || child instanceof Line2) {
           child.geometry.dispose()
-          if (child.material instanceof THREE.Material) {
-            child.material.dispose()
-          }
         }
       })
     },

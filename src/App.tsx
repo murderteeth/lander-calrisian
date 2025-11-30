@@ -1,11 +1,11 @@
 import { LuArrowRight, LuBadgeDollarSign, LuChevronDown } from "react-icons/lu"
 import Button from "./Button"
 import Input from "./Input"
-import SynthwaveGrid from "./SynthwaveGrid"
+import SynthwaveGrid from "./components/bg-brave/SynthwaveGrid"
 
 function App() {
   return (
-    <div className="relative w-full min-h-screen bg-slate-950 text-white flex flex-col items-start gap-12">
+    <div className="relative w-full min-h-screen text-white flex flex-col items-start gap-12">
       <SynthwaveGrid />
 
       <div className="w-full px-[12%] py-8">

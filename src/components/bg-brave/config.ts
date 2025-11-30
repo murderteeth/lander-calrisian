@@ -5,12 +5,16 @@
 // Colors
 export const BG_COLOR = 0x020618
 
+// Background Gradient (top to bottom)
+export const BG_GRADIENT_TOP = 0x6e11b0 // indigo-950
+export const BG_GRADIENT_BOTTOM = 0x020617 // slate-950
+
 // Camera
 export const CAMERA_FOV = 75
 export const CAMERA_HEIGHT = 5
 export const CAMERA_ORBIT_ANGLE = 25 // Degrees, horizontal orbit around target (+ = right)
 export const CAMERA_DISTANCE = 100 // Distance from target
-export const CAMERA_ROLL = 2 // Degrees, tilt on view axis (+ = clockwise)
+export const CAMERA_ROLL = 1 // Degrees, tilt on view axis (+ = clockwise)
 
 // Grid
 export const GRID_LINE_COLOR = 0x314158
@@ -21,7 +25,7 @@ export const GRID_WIDTH = 300 // How wide the grid extends
 export const GRID_SCROLL_SPEED = .4 // World units per second
 
 // Mountains - shared settings
-export const MOUNTAINS_COLOR = 0x273e81
+export const MOUNTAINS_COLOR = 0x0f172b
 export const MOUNTAINS_DISTANCE = 80 // Base distance from camera
 export const MOUNTAINS_LINE_WIDTH = 1 // Wireframe line width (pixels)
 export const MOUNTAINS_ROTATION = { x: -15, y: 5, z: 0 } // Degrees
@@ -40,9 +44,9 @@ export const MOUNTAINS = [
 ]
 
 // Y Character
-export const Y_COLOR = 0x273e81
+export const Y_COLOR = 0x0f172b
 export const Y_POSITION = { x: 0, y: 20, z: -100 } // World position
 export const Y_SCALE = 0.14 // Scale factor
 export const Y_ROTATION = { x: 0, y: 0, z: 0 } // Degrees
 export const Y_LINE_WIDTH = 1 // Wireframe line width (pixels)
-export const Y_DEPTH = 32 // Extrusion depth
+export const Y_DEPTH = 54 // Extrusion depth

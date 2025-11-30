@@ -1,10 +1,10 @@
 import * as THREE from "three"
 THREE.ColorManagement.enabled = false
+import { createBackground, type BackgroundElement } from "./elements/background"
 import { createGrid, type GridElement } from "./elements/grid"
 import { createMountains, type MountainsElement } from "./elements/mountains"
 import { createY, type YElement } from "./elements/y"
 import {
-  BG_COLOR,
   CAMERA_FOV,
   CAMERA_HEIGHT,
   CAMERA_ORBIT_ANGLE,
@@ -25,7 +25,6 @@ export function createScene(container: HTMLElement): Scene {
 
   // Scene
   const scene = new THREE.Scene()
-  scene.background = new THREE.Color(BG_COLOR)
 
   // Perspective camera with orbital positioning around Y
   const camera = new THREE.PerspectiveCamera(
@@ -54,10 +53,12 @@ export function createScene(container: HTMLElement): Scene {
   container.appendChild(renderer.domElement)
 
   // Elements
+  const background: BackgroundElement = createBackground()
   const grid: GridElement = createGrid()
   const mountains: MountainsElement = createMountains()
   const y: YElement = createY()
 
+  scene.add(background.object)
   scene.add(grid.object)
   scene.add(mountains.object)
   scene.add(y.object)
@@ -99,6 +100,7 @@ export function createScene(container: HTMLElement): Scene {
     dispose: () => {
       window.removeEventListener("resize", handleResize)
       cancelAnimationFrame(animationId)
+      background.dispose()
       grid.dispose()
       mountains.dispose()
       y.dispose()

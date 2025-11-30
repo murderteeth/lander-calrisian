@@ -8,12 +8,15 @@ function App() {
     <div className="relative w-full min-h-screen text-white flex flex-col items-start gap-12">
       <BgBrave />
 
-      <div className="w-full px-[12%] py-8">
+      <div className="w-full px-[12%] py-8 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-[#0657f9] rounded-full">
             <img src="/y-white.svg" alt="Vite" className="w-10 h-10" />
           </div>
           <div className="mb-1 text-2xl font-bold">yearn finance</div>
+        </div>
+        <div className="hidden">
+          <Button className="text-base h-8">Connect</Button>
         </div>
       </div>
 
@@ -34,18 +37,18 @@ function App() {
           </div>
         </div>
 
-        <div className="w-[25%] p-6 flex flex-col gap-6">
-          <div className="w-full h-16 px-4 flex items-center justify-between bg-slate-300 border border-slate-100 drop-shadow-2 rounded-lg">
+        <div className="w-[25%] py-6 flex flex-col gap-6">
+          <div className="w-full h-16 px-4 flex items-center justify-between bg-slate-900 border border-slate-800 drop-shadow-2 rounded-lg">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 flex items-center justify-center bg-slate-800 rounded-full">
+              <div className="w-12 h-12 flex items-center justify-center bg-slate-950 rounded-full">
                 <LuBadgeDollarSign className="text-3xl" />
               </div>
-              <div className="text-xl text-slate-900 font-bold">
+              <div className="text-xl text-slate-200 font-bold">
                 yUSD
               </div>
             </div>
             <div>
-              <LuChevronDown className="text-xl text-slate-900" />
+              <LuChevronDown className="text-xl text-slate-200" />
             </div>
           </div>
 
@@ -61,11 +64,11 @@ function App() {
             <div>Earning now</div>
           </div>
 
-          <div className="w-full p-4 flex flex-col items-center justitfy-center gap-6 text-primary-950 bg-slate-300 border border-slate-200 drop-shadow-2 rounded-lg">
+          <div className="w-full p-4 flex flex-col items-center justitfy-center gap-6 text-primary-200 bg-slate-900 border border-slate-800 drop-shadow-2 rounded-lg">
             <Input className="w-full text-primary-100 bg-black" type="number" value="1000" />
             <div className="w-full px-3 flex flex-col items-end">
               <div className="text-2xl font-mono">$ 1,000.000742</div>
-              <div>You can be earning</div>
+              <div>You earn</div>
             </div>
             <div className="">
               . ..... ..... . ...... . .. ...... ...... ........ ....... ....... . ... .... . ... ....... .... .... ........ ....... ... .... . ...... ..... ... ....... .... ..... ...... ....... .... . ........ .. 

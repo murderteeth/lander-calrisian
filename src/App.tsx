@@ -1,9 +1,35 @@
+import { useState, useEffect } from "react"
 import { LuArrowRight, LuBadgeDollarSign, LuChevronDown } from "react-icons/lu"
 import Button from "./Button"
 import Input from "./Input"
 import BgBrave from "./components/bg-brave"
+import Odometer from "./components/Odometer"
+import { FORMAT_4_DECIMALS, FORMAT_6_DECIMALS } from "./components/Odometer/constants"
+
+const VAULT_INCREMENT = 14.33
+const VAULT_TVL = 104_000_000
 
 function App() {
+  const [vaultEarnings, setVaultEarnings] = useState(46864.18271)
+  const [depositAmount, setDepositAmount] = useState(1000)
+  const [userEarnings, setUserEarnings] = useState(1000)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setVaultEarnings(prev => prev + VAULT_INCREMENT)
+      setUserEarnings(prev => {
+        const userIncrement = VAULT_INCREMENT * (depositAmount / VAULT_TVL)
+        return prev + userIncrement
+      })
+    }, 3000)
+    return () => clearInterval(interval)
+  }, [depositAmount])
+
+  const handleDepositChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Number(e.target.value) || 0
+    setDepositAmount(value)
+    setUserEarnings(value)
+  }
   return (
     <div className="relative w-full min-h-screen text-white flex flex-col items-start gap-12">
       <BgBrave />
@@ -23,8 +49,8 @@ function App() {
       <div className="w-full px-[12%] flex">
         <div className="w-[75%] pt-24 flex flex-col gap-8">
           <div className="w-full flex flex-col">
-            <h1 className="-mb-3 text-6xl font-bold uppercase">Yearn Vaults are Brave</h1>
-            <h1 className="text-6xl font-bold uppercase">New Worlds of Yield</h1>
+            <h1 className="-mb-3 text-5xl font-bold uppercase">Yearn Vaults are Brave</h1>
+            <h1 className="text-5xl font-bold uppercase">New Worlds of Yield</h1>
           </div>
 
           <div className="text-2xl">
@@ -60,14 +86,20 @@ function App() {
           </div>
 
           <div className="px-3 flex flex-col items-end">
-            <div className="text-3xl font-mono">$ 46,864.18271</div>
+            <div className="w-full flex items-center justify-between text-3xl font-mono">
+              <div>$</div>
+              <Odometer value={vaultEarnings} format={FORMAT_4_DECIMALS} />
+            </div>
             <div>Earning now</div>
           </div>
 
           <div className="w-full p-4 flex flex-col items-center justitfy-center gap-6 text-primary-200 bg-slate-900 border border-slate-800 drop-shadow-2 rounded-lg">
-            <Input className="w-full text-primary-100 bg-black" type="number" value="1000" />
+            <Input className="w-full text-primary-100 bg-black" type="number" value={depositAmount} onChange={handleDepositChange} />
             <div className="w-full px-3 flex flex-col items-end">
-              <div className="text-2xl font-mono">$ 1,000.000742</div>
+              <div className="w-full flex items-center justify-between text-2xl font-mono">
+                <div>$</div>
+                <Odometer value={userEarnings} format={FORMAT_6_DECIMALS} />
+              </div>
               <div>You earn</div>
             </div>
             <div className="">

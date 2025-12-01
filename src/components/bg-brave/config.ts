@@ -21,7 +21,7 @@ export const GRID_LINE_COLOR = 0x314158
 export const GRID_CELL_SIZE = 2 // World units per cell
 export const GRID_LINE_WIDTH = 0.005 // World units
 export const GRID_DEPTH = 100 // How far the grid extends
-export const GRID_WIDTH = 300 // How wide the grid extends
+export const GRID_WIDTH = 180 // How wide the grid extends
 export const GRID_SCROLL_SPEED = .4 // World units per second
 
 // Mountains - shared settings

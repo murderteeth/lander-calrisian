@@ -1,0 +1,8 @@
+export default function Section5() {
+  return (
+    <section id="section-5" className="w-full px-[12%] py-24 bg-slate-900">
+      <h2 className="text-4xl font-bold">Section 5</h2>
+      <p className="mt-4 text-xl text-slate-400">Placeholder content</p>
+    </section>
+  )
+}

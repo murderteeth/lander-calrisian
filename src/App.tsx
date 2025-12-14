@@ -63,7 +63,7 @@ function App() {
           </div>
         </div>
 
-        <div className="w-[25%] py-6 flex flex-col gap-6">
+        <div className="w-[25%] py-6 flex flex-col gap-6 ">
           <div className="w-full h-16 px-4 flex items-center justify-between bg-slate-900 border border-slate-800 drop-shadow-2 rounded-lg">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 flex items-center justify-center bg-slate-950 rounded-full">

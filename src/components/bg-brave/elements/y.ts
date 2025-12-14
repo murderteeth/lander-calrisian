@@ -5,12 +5,15 @@ import { LineMaterial } from "three/addons/lines/LineMaterial.js"
 import { LineGeometry } from "three/addons/lines/LineGeometry.js"
 import {
   BG_COLOR,
+  BG_GRADIENT_TOP,
+  BG_GRADIENT_BOTTOM,
   Y_COLOR,
-  Y_POSITION,
   Y_SCALE,
   Y_ROTATION,
   Y_LINE_WIDTH,
   Y_DEPTH,
+  CENTRAL_BUILDING,
+  CITY_ROW_DISTANCES,
 } from "../config"
 
 export interface YElement {
@@ -71,21 +74,44 @@ export function createY(): YElement {
     worldUnits: false,
   })
 
-  // Fill material
+  // Gradient fill material (pink top to indigo bottom, front/back faces only)
   const fillMaterial = new THREE.ShaderMaterial({
     vertexShader: `
+      varying vec3 vPosition;
+      varying vec3 vNormal;
       void main() {
+        vPosition = position;
+        vNormal = normalize(normalMatrix * normal);
         gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
       }
     `,
     fragmentShader: `
-      uniform vec3 uColor;
+      uniform vec3 uColorTop;
+      uniform vec3 uColorBottom;
+      uniform vec3 uSideColor;
+      uniform float uMinY;
+      uniform float uMaxY;
+      varying vec3 vPosition;
+      varying vec3 vNormal;
       void main() {
-        gl_FragColor = vec4(uColor, 1.0);
+        // Check if front/back face (normal pointing mostly in Z direction)
+        float isFrontBack = abs(vNormal.z);
+
+        // Gradient for front/back faces
+        float t = clamp((vPosition.y - uMinY) / (uMaxY - uMinY), 0.0, 1.0);
+        vec3 gradientColor = mix(uColorBottom, uColorTop, t);
+
+        // Mix between gradient and side color based on normal
+        vec3 color = mix(uSideColor, gradientColor, isFrontBack);
+        gl_FragColor = vec4(color, 1.0);
       }
     `,
     uniforms: {
-      uColor: { value: new THREE.Color(BG_COLOR) },
+      uColorTop: { value: new THREE.Color(BG_GRADIENT_TOP) },
+      uColorBottom: { value: new THREE.Color(BG_GRADIENT_BOTTOM) },
+      uSideColor: { value: new THREE.Color(BG_COLOR) },
+      uMinY: { value: -180.0 },
+      uMaxY: { value: 120.0 },
     },
     side: THREE.DoubleSide,
   })
@@ -113,6 +139,8 @@ export function createY(): YElement {
 
   const yGeometry = new THREE.ExtrudeGeometry(yShape, extrudeSettings)
   geometries.push(yGeometry)
+
+  // Y main mesh
   const yMesh = new THREE.Mesh(yGeometry, fillMaterial)
   yMesh.position.y = yOffset
   yMesh.position.z = -Y_DEPTH / 2 // Center the extrusion
@@ -140,6 +168,7 @@ export function createY(): YElement {
       arcGeometry.translate(-centerX, -centerY, -Y_DEPTH / 2)
       arcGeometry.scale(1, -1, 1)
 
+      // Arc main mesh
       const arcMesh = new THREE.Mesh(arcGeometry, fillMaterial)
       group.add(arcMesh)
 
@@ -148,9 +177,18 @@ export function createY(): YElement {
     }
   }
 
-  // Apply transforms
+  // Apply transforms - position as ornament on central building front face
   group.scale.set(Y_SCALE, Y_SCALE, Y_SCALE)
-  group.position.set(Y_POSITION.x, Y_POSITION.y, Y_POSITION.z)
+
+  // Calculate position on central building:
+  // - X: centered on building
+  // - Y: upper portion of building (70% up from base)
+  // - Z: front face of building (building center - half depth) + slight offset forward
+  const yPosX = CENTRAL_BUILDING.x
+  const yPosY = CENTRAL_BUILDING.height * 0.75
+  const yPosZ = -(CITY_ROW_DISTANCES.front + CENTRAL_BUILDING.z) + CENTRAL_BUILDING.depth / 2 + 0.5
+
+  group.position.set(yPosX, yPosY, yPosZ)
   group.rotation.x = THREE.MathUtils.degToRad(Y_ROTATION.x)
   group.rotation.y = THREE.MathUtils.degToRad(Y_ROTATION.y)
   group.rotation.z = THREE.MathUtils.degToRad(Y_ROTATION.z)

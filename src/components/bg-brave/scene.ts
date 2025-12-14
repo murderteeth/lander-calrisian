@@ -2,7 +2,7 @@ import * as THREE from "three"
 THREE.ColorManagement.enabled = false
 import { createBackground, type BackgroundElement } from "./elements/background"
 import { createGrid, type GridElement } from "./elements/grid"
-import { createMountains, type MountainsElement } from "./elements/mountains"
+import { createCity, type CityElement } from "./elements/city"
 import { createY, type YElement } from "./elements/y"
 import {
   CAMERA_FOV,
@@ -10,7 +10,6 @@ import {
   CAMERA_ORBIT_ANGLE,
   CAMERA_DISTANCE,
   CAMERA_ROLL,
-  Y_POSITION,
 } from "./config"
 
 export interface Scene {
@@ -34,14 +33,19 @@ export function createScene(container: HTMLElement): Scene {
     1000
   )
 
-  // Calculate camera position on orbit circle around Y_POSITION
+  // Original camera target position (preserved from mountains version)
+  const targetX = 0
+  const targetY = 20
+  const targetZ = -100
+
+  // Calculate camera position on orbit circle around target
   const orbitAngleRad = THREE.MathUtils.degToRad(CAMERA_ORBIT_ANGLE)
-  const cameraX = Y_POSITION.x + Math.sin(orbitAngleRad) * CAMERA_DISTANCE
-  const cameraZ = Y_POSITION.z + Math.cos(orbitAngleRad) * CAMERA_DISTANCE
+  const cameraX = targetX + Math.sin(orbitAngleRad) * CAMERA_DISTANCE
+  const cameraZ = targetZ + Math.cos(orbitAngleRad) * CAMERA_DISTANCE
   camera.position.set(cameraX, CAMERA_HEIGHT, cameraZ)
 
-  // Look at the Y position
-  camera.lookAt(Y_POSITION.x, Y_POSITION.y, Y_POSITION.z)
+  // Look at the target position
+  camera.lookAt(targetX, targetY, targetZ)
 
   // Apply roll (tilt on view axis) after lookAt
   camera.rotateZ(THREE.MathUtils.degToRad(-CAMERA_ROLL))
@@ -55,16 +59,16 @@ export function createScene(container: HTMLElement): Scene {
   // Elements
   const background: BackgroundElement = createBackground()
   const grid: GridElement = createGrid()
-  const mountains: MountainsElement = createMountains()
+  const city: CityElement = createCity()
   const y: YElement = createY()
 
   scene.add(background.object)
   scene.add(grid.object)
-  scene.add(mountains.object)
+  scene.add(city.object)
   scene.add(y.object)
 
   // Set initial resolution for line materials
-  mountains.onResize(width, height)
+  city.onResize(width, height)
   y.onResize(width, height)
 
   // Resize handler
@@ -74,7 +78,7 @@ export function createScene(container: HTMLElement): Scene {
     camera.aspect = w / h
     camera.updateProjectionMatrix()
     renderer.setSize(w, h)
-    mountains.onResize(w, h)
+    city.onResize(w, h)
     y.onResize(w, h)
   }
   window.addEventListener("resize", handleResize)
@@ -102,7 +106,7 @@ export function createScene(container: HTMLElement): Scene {
       cancelAnimationFrame(animationId)
       background.dispose()
       grid.dispose()
-      mountains.dispose()
+      city.dispose()
       y.dispose()
       renderer.dispose()
       container.removeChild(renderer.domElement)

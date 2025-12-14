@@ -62,6 +62,8 @@ export function createScene(container: HTMLElement): Scene {
   const city: CityElement = createCity()
   const y: YElement = createY()
 
+  city.object.position.y = -2 // tweak this value to push buildings below the grid
+
   scene.add(background.object)
   scene.add(grid.object)
   scene.add(city.object)

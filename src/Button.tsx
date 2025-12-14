@@ -15,7 +15,7 @@ function buttonClassName(props: ButtonProps) {
   return cn(`
     relative h-[42px] px-8 flex items-center justify-center
     text-2xl tracking-wide
-    drop-shadow-4 drop-shadow-black
+    drop-shadow-2 drop-shadow-secondary-950/60
     border cursor-pointer rounded-primary whitespace-nowrap
 
     data-[variant=accent]:bg-interactive-accent

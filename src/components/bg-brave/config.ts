@@ -20,7 +20,7 @@ export const CAMERA_ROLL = 1 // Degrees, tilt on view axis (+ = clockwise)
 export const GRID_LINE_COLOR = 0x314158
 export const GRID_CELL_SIZE = 2 // World units per cell
 export const GRID_LINE_WIDTH = 0.005 // World units
-export const GRID_DEPTH = 300 // How far the grid extends
+export const GRID_DEPTH = 110 // How far the grid extends
 export const GRID_WIDTH = 1000 // How wide the grid extends
 export const GRID_SCROLL_SPEED = 0.4 // World units per second
 

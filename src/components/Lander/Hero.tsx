@@ -6,6 +6,7 @@ import BgBrave from "../bg-brave"
 import Odometer from "../Odometer"
 import { FORMAT_4_DECIMALS, FORMAT_6_DECIMALS } from "../Odometer/constants"
 import RotatingTagline from "../RotatingTagline"
+import { useMediaQuery } from "../../hooks/useMediaQuery"
 
 const VAULT_INCREMENT = 14.33
 const VAULT_TVL = 104_000_000
@@ -15,6 +16,7 @@ interface HeroProps {
 }
 
 export default function Hero({ onLearnMore }: HeroProps) {
+  const isDesktop = useMediaQuery("(min-width: 768px)")
   const [vaultEarnings, setVaultEarnings] = useState(46864.18271)
   const [depositAmount, setDepositAmount] = useState(1000)
   const [userEarnings, setUserEarnings] = useState(1000)
@@ -38,9 +40,10 @@ export default function Hero({ onLearnMore }: HeroProps) {
 
   return (
     <section id="hero" className="relative w-full min-h-screen text-white flex flex-col items-start gap-12">
-      <BgBrave />
+      <div className="absolute inset-0 -z-20 bg-gradient-to-br from-slate-900 via-slate-950 to-black" />
+      {isDesktop && <BgBrave />}
 
-      <div className="w-full px-[12%] py-8 flex items-center justify-between">
+      <div className="w-full px-6 md:px-[12%] py-8 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-[#0657f9] rounded-full">
             <img src="/y-white.svg" alt="Yearn Finance" className="w-10 h-10" />
@@ -52,14 +55,14 @@ export default function Hero({ onLearnMore }: HeroProps) {
         </div>
       </div>
 
-      <div className="w-full px-[12%] flex">
-        <div className="w-[75%] pt-36 flex flex-col gap-8">
+      <div className="w-full px-6 md:px-[12%] pb-12 flex flex-col md:flex-row gap-8 md:gap-0">
+        <div className="w-full md:w-[75%] md:pt-36 flex flex-col gap-6 md:gap-8">
           <div className="w-full flex flex-col">
-            <h1 className="-mb-2 text-2xl font-bold">Earn on your crypto with</h1>
-            <h1 className="text-5xl font-bold uppercase">The safest Yields Onchain</h1>
+            <h1 className="-mb-2 text-lg md:text-2xl font-bold">Earn on your crypto with</h1>
+            <h1 className="text-3xl md:text-5xl font-bold uppercase">The safest Yields Onchain</h1>
           </div>
 
-          <div className="px-2 text-2xl">
+          <div className="px-2 text-lg md:text-2xl">
             <RotatingTagline
               messages={[
                 "A brave new world of yield",
@@ -69,15 +72,15 @@ export default function Hero({ onLearnMore }: HeroProps) {
             />
           </div>
 
-          <div className="mt-8 flex items-center gap-8">
-            <Button className="px-12" onClick={onLearnMore}>Learn more</Button>
-            <Button className="px-12 flex items-center gap-3">
+          <div className="hidden md:flex mt-4 md:mt-8 flex-col sm:flex-row items-stretch sm:items-center gap-4 md:gap-8">
+            <Button className="px-8 md:px-12" onClick={onLearnMore}>Learn more</Button>
+            <Button className="px-8 md:px-12 flex items-center justify-center gap-3">
               <div>Explore vaults</div>
             </Button>
           </div>
         </div>
 
-        <div className={`w-[25%] px-6 py-7 flex flex-col gap-6
+        <div className={`w-full md:w-[25%] px-6 py-7 flex flex-col gap-6
           bg-slate-900 border border-interactive-secondary-border
           drop-shadow-2 drop-shadow-secondary-950/68 rounded-lg`}>
           <div className="w-full h-16 flex items-center justify-between">
@@ -128,6 +131,13 @@ export default function Hero({ onLearnMore }: HeroProps) {
             </Button>
           </div>
 
+        </div>
+
+        <div className="flex md:hidden flex-col gap-4 w-full">
+          <Button className="px-8" onClick={onLearnMore}>Learn more</Button>
+          <Button className="px-8 flex items-center justify-center gap-3">
+            <div>Explore vaults</div>
+          </Button>
         </div>
       </div>
     </section>

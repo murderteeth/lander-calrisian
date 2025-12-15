@@ -25,7 +25,7 @@ export const GRID_WIDTH = 1000 // How wide the grid extends
 export const GRID_SCROLL_SPEED = 0.4 // World units per second
 
 // City - shared settings
-export const CITY_COLOR = 0x0f172b
+export const CITY_COLOR = 0x060814
 export const CITY_LINE_WIDTH = 1 // Wireframe line width (pixels)
 
 // Building row distances from camera
@@ -160,7 +160,7 @@ export const BUILDINGS_FAR = [
 
 // Y Character - ornament on central building
 export const Y_COLOR = 0x0f172b
-export const Y_SCALE = 0.04 // Scale factor (slightly smaller as ornament)
+export const Y_SCALE = 0.035 // Scale factor (slightly smaller as ornament)
 export const Y_ROTATION = { x: 0, y: 0, z: 0 } // Degrees
 export const Y_LINE_WIDTH = 1 // Wireframe line width (pixels)
 export const Y_DEPTH = 8 // Shallow extrusion for ornament

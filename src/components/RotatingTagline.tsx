@@ -19,7 +19,7 @@ export default function RotatingTagline({
   const { ref } = useScramble({
     text: messages[index],
     playOnMount: false,
-    speed: 12,
+    speed: 1.4,
     tick: 1,
     step: 1,
     scramble: 8,

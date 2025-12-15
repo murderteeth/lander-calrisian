@@ -78,4 +78,27 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
 Button.displayName = 'Button'
 
+export type AnchorButtonProps = React.AnchorHTMLAttributes<HTMLAnchorElement> & {
+  className?: string
+  variant?: Variant
+}
+
+const AnchorButton = forwardRef<HTMLAnchorElement, AnchorButtonProps>(
+  ({ className, variant = 'secondary', children, ...props }, ref) => {
+    return (
+      <a
+        data-variant={variant}
+        ref={ref}
+        {...props}
+        className={buttonClassName({ className, variant })}
+      >
+        {children}
+      </a>
+    )
+  },
+)
+
+AnchorButton.displayName = 'AnchorButton'
+
+export { AnchorButton }
 export default Button

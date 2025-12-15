@@ -1,6 +1,5 @@
 import * as THREE from "three"
 THREE.ColorManagement.enabled = false
-import { createBackground, type BackgroundElement } from "./elements/background"
 import { createGrid, type GridElement } from "./elements/grid"
 import { createCity, type CityElement } from "./elements/city"
 import { createY, type YElement } from "./elements/y"
@@ -51,20 +50,19 @@ export function createScene(container: HTMLElement): Scene {
   camera.rotateZ(THREE.MathUtils.degToRad(-CAMERA_ROLL))
 
   // Renderer
-  const renderer = new THREE.WebGLRenderer({ antialias: true })
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
+  renderer.setClearColor(0x000000, 0)
   renderer.setPixelRatio(window.devicePixelRatio)
   renderer.setSize(width, height)
   container.appendChild(renderer.domElement)
 
   // Elements
-  const background: BackgroundElement = createBackground()
   const grid: GridElement = createGrid()
   const city: CityElement = createCity()
   const y: YElement = createY()
 
   city.object.position.y = -2 // tweak this value to push buildings below the grid
 
-  scene.add(background.object)
   scene.add(grid.object)
   scene.add(city.object)
   scene.add(y.object)
@@ -106,7 +104,6 @@ export function createScene(container: HTMLElement): Scene {
     dispose: () => {
       window.removeEventListener("resize", handleResize)
       cancelAnimationFrame(animationId)
-      background.dispose()
       grid.dispose()
       city.dispose()
       y.dispose()

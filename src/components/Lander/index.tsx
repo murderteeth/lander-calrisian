@@ -7,13 +7,9 @@ import Section5 from "./Section5"
 import Footer from "./Footer"
 
 export default function Lander() {
-  const scrollToSection = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })
-  }
-
   return (
     <div className="w-full text-white">
-      <Hero onLearnMore={() => scrollToSection("section-1")} />
+      <Hero />
       <Section1 />
       <Section2 />
       <Section3 />

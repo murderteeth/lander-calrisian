@@ -1,3 +1,6 @@
+import { LuArrowRight } from "react-icons/lu"
+import Button from "../../Button"
+
 const strategies = [
   {
     name: "Morpho USDC",

@@ -67,7 +67,7 @@ export default function Section2() {
       <div className="grid gap-10 md:grid-cols-[0.9fr_1.1fr] md:items-center">
         <div>
           <div className="flex flex-col gap-4">
-            <h2 className="text-4xl font-bold">Transparent 24/7 Optimization</h2>
+            <h2 className="text-4xl font-bold">Verifiable 24/7 Asset Management</h2>
             <p className="max-w-xl text-xl text-slate-400">
               We continuously monitor yield, risk, and liquidity, then reallocate vault capital as better opportunities emerge. 
             </p>

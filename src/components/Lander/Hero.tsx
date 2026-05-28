@@ -55,15 +55,16 @@ export default function Hero() {
         <div className="w-full md:w-[75%] md:pt-[25%] flex flex-col gap-6 md:gap-8">
           <div className="w-full flex flex-col">
             <h1 className="-mb-2 text-lg md:text-2xl font-bold">Earn on your crypto with</h1>
-            <h1 className="text-3xl md:text-5xl font-bold uppercase">The safest Yields Onchain</h1>
+            <h1 className="text-3xl md:text-5xl font-bold uppercase">The safest Yields in DeFi</h1>
           </div>
 
           <div className="px-2 text-lg md:text-2xl">
             <RotatingTagline
               messages={[
+                "Stop trusting the black box with your assets",
+                "Open, durable, secure, always",
                 "A brave new world of yield",
-                "Rotating tagline two",
-                "Rotating tagline three",
+                "Yearn Finance",
               ]}
             />
           </div>
@@ -85,7 +86,7 @@ export default function Hero() {
                 <LuBadgeDollarSign className="text-3xl" />
               </div>
               <div className="text-xl text-slate-200 font-bold">
-                yUSD
+                yvUSD
               </div>
             </div>
           </div>
